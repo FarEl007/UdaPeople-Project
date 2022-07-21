@@ -1,5 +1,50 @@
 version: 2.1
-            
+
+commands:
+  install_ansible:
+    description: Install Ansible
+    steps:
+     - run:
+          name: Install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible -y
+
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      WorkflowID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
+
+  revert-migrations:
+    description: Revert the last migration if it runs successfully in current workflow
+    parameters:
+      Workflow_ID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
+    steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+            SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
+            if (( $SUCCESS == 1 ));
+            then
+              cd ~/project/backend
+              npm install
+              npm run migration:revert
+            fi            
 jobs:
   build-frontend:
     docker:
@@ -150,6 +195,53 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
 
+  configure-infrastructure:
+      docker:
+        image: python:3.10-alpine3.16
+      steps:
+        - checkout
+        - add_ssh_keys:
+            fingerprints: [02:08:50:c8:ed:bd:ed:95:2d:c6:1c:51:8c:bd:06:4d]
+        - attach workspace:
+            at: ~/
+        - install_awscli
+        - install_ansible
+        - run:
+            name: Install dependencies
+            command: |
+              apk add --update ansible tar gzip aws-cli      
+        - restore_cache:
+            keys: [backend-build]
+        - run:
+            name: Configure Server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
+        - destroy-environment
+        # Here's where you will add some code to rollback on failure      
+
+  run-migrations:
+    docker:
+      image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+              npm install
+              npm run migrations > migrations_dump.txt
+      - run:
+          name: Send migration results to memstash
+          command: |
+             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            then
+              curl --insecure https://kvdb.io/44AiaWhFs7m8bJBnWtx4Ms/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+            fi
+      - destroy-environment
+      - revert-migrations
+
 workflows:
   default:
     jobs:
@@ -168,3 +260,7 @@ workflows:
           filters:
             branches:
               only: [master]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
