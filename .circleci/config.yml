@@ -268,8 +268,7 @@ jobs:
       - install_nodejs
       - install_ansible
       - add_ssh_keys:
-          fingerprints:
-            - ["02:08:50:c8:ed:bd:ed:95:2d:c6:1c:51:8c:bd:06:4d"]
+          fingerprints: ["02:08:50:c8:ed:bd:ed:95:2d:c6:1c:51:8c:bd:06:4d"]
       - run:
           name: Install dependencies
           command: |
@@ -308,8 +307,7 @@ jobs:
       - install_nodejs
       - install_ansible
       - add_ssh_keys:
-          fingerprints:
-            - ["02:08:50:c8:ed:bd:ed:95:2d:c6:1c:51:8c:bd:06:4d"]
+          fingerprints: ["02:08:50:c8:ed:bd:ed:95:2d:c6:1c:51:8c:bd:06:4d"]
       - attach_workspace:
           at: ~/
       - run:
@@ -330,7 +328,7 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-            
+
       - destroy-environment
       - revert-migrations
 
