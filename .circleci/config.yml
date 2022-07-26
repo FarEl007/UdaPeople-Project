@@ -372,11 +372,11 @@ jobs:
             export API_URL=http://${BACKEND_PUBLIC_IP}:3030
             echo ${BACKEND_PUBLIC_IP}
             echo ${API_URL}
-            if curl "$API_URL/api/status" | grep "ok"
+            if curl "${API_URL}/api/status" | grep "ok"
             then
-              exit 0
+              return 0
             else
-              exit 1
+              return 1
             fi
       - run:
           name: Frontend smoke test
@@ -384,9 +384,9 @@ jobs:
             FRONTEND_URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
             if curl -s $FRONTEND_URL | grep "Welcome"
             then
-              exit 0
+              return 0
             else
-              exit 1
+              return 1
             fi
       - destroy-environment
       - revert-migrations
