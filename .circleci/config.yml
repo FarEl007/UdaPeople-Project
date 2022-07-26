@@ -372,7 +372,7 @@ jobs:
             export API_URL=http://${BACKEND_PUBLIC_IP}:3030
             echo ${BACKEND_PUBLIC_IP}
             echo ${API_URL}
-            if curl --connect-timeout 5 "${API_URL}/api/status" | grep "ok"
+            if curl -s "${API_URL}/api/status" | grep "ok"
             then
               exit 0
             else
@@ -384,12 +384,12 @@ jobs:
             FRONTEND_URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com
             if curl -s $FRONTEND_URL | grep "Welcome"
             then
-              return 0
+              exit 1
             else
-              return 1
+              exit 1
             fi
-      # - destroy-environment
-      # - revert-migrations
+      - destroy-environment
+      - revert-migrations
 
 workflows:
   default:
