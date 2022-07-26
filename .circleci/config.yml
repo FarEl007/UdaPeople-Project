@@ -254,7 +254,6 @@ jobs:
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
-            cat migrations_dump.txt
       - run:
           name: Send migration results to kvdb
           command: |
@@ -343,11 +342,7 @@ jobs:
   #     - install_awscli
   #     - install_nodejs
   #     - run:
-  #         name: Get backend url
-  #         command: |
-
-  #     - run:
-  #         name: Backend smoke test
+  #         name: Backend smoke test and get URL
   #         command: |
   #           BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
   #             --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
