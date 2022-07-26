@@ -272,7 +272,9 @@ jobs:
           command: |
             cd backend
             npm install
+            npm run build
             npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -336,10 +338,6 @@ jobs:
           fingerprints: ["02:08:50:c8:ed:bd:ed:95:2d:c6:1c:51:8c:bd:06:4d"]
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update nodejs ansible tar npm curl gzip aws-cli
       - run:
           name: Deploy backend
           command: |
