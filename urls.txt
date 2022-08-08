@@ -1,0 +1,5 @@
+URL01 (Git repo): `https://github.com/FarEl007/UdaPeople-Project`  
+URL02 (S3 bucket): `http://udapeople-ae47827.s3-website-us-east-1.amazonaws.com`  
+URL03 (CloudFront Frontend URL): `d2l3ax2lo44rs1.cloudfront.net`  
+URL04 (deployed application backend in EC2):  `ec2-52-91-189-129.compute-1.amazonaws.com:3030`
+URL05 (Prometheus server): `ec2-54-197-116-167.compute-1.amazonaws.com:9090`
