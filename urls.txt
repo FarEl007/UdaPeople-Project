@@ -1,4 +1,12 @@
+1 - URL01
+A public github repository with my project code 
 URL01: https://github.com/FarEl007/UdaPeople-Project
-URL02: 
-URL03: 
-URL04: :https 3030
+2 - URL02 
+Evidence of deployed and functioning front-end application in an S3 bucket
+URL02: http://udapeople-d0e7461.s3-website-us-east-1.amazonaws.com
+3 - URL03
+Evidence of healthy back-end application
+URL03: http://ec2-3-87-210-38.compute-1.amazonaws.com:3030/api/status
+4 - URL04
+Evidence of Prometheus Server
+URL04: http://ec2-3-83-244-109.compute-1.amazonaws.com:9090/graph
