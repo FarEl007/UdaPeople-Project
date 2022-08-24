@@ -420,6 +420,10 @@ jobs:
       - revert-migrations    
 
   cleanup:
+    parameters:
+      Workflow_ID:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}
     docker:
       - image: amazon/aws-cli
     steps:
