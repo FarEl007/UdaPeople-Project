@@ -3,10 +3,13 @@ A public github repository with my project code
 URL01: https://github.com/FarEl007/UdaPeople-Project
 2 - URL02 
 Evidence of deployed and functioning front-end application in an S3 bucket
-URL02: 
+URL02: http://udapeople-6189469.s3-website-us-east-1.amazonaws.com
+3 - URL03
+Evidence of deployed and functioning front-end application in CloudFront
+URL03: http://dpswijyxa0hji.cloudfront.net
 3 - URL03
 Evidence of healthy back-end application
-URL03: :3030/api/status
+URL03: http://ec2-54-173-132-10.compute-1.amazonaws.com:3030/api/status
 4 - URL04
 Evidence of Prometheus Server
-URL04: http://ec2-54-235-3-160.compute-1.amazonaws.com/:9090
+URL04: http://ec2-34-203-202-57.compute-1.amazonaws.com:9090
