@@ -9,4 +9,4 @@ Evidence of healthy back-end application
 URL03: :3030/api/status
 4 - URL04
 Evidence of Prometheus Server
-URL04: ec2-54-196-203-101.compute-1.amazonaws.com:9090
+URL04: http://ec2-54-235-3-160.compute-1.amazonaws.com/:9090
